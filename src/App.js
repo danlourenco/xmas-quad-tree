@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import images from './source';
+import quadtree from './quadtree.json';
 import Tile from './Tile';
 
 class App extends Component {
@@ -8,7 +8,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        { images.map((image, i) => <Tile key={ i } {...image} />)}
+        { quadtree.map((image, i) => <Tile key={ i } {...image} />)}
       </div>
     );
   }

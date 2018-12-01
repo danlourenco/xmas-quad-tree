@@ -15,7 +15,7 @@ export default class Tile extends Component {
   };
 
   state = {
-    scale: 100,
+    scale: 1,
   };
 
   render() {
@@ -24,15 +24,15 @@ export default class Tile extends Component {
 
     const photo = getRandomImage();
     const tileStyle = {
-      background: `url(${photo})`,
-      backgroundColor: `rgba(${ r }, ${ g }, ${ b }, ${ 0.9 })`,
+      // background: `url(${photo})`,
+      backgroundColor: `rgba(${ r }, ${ g }, ${ b }, ${ 1 })`,
       backgroundSize: `cover`,
       position: 'absolute',
       height: `${ height * scale }%`,
       width: `${ width * scale }%`,
       top: `${ y * scale }%`,
       left: `${ x * scale }%`,
-      backgroundBlendMode: `lighten`
+      backgroundBlendMode: `multiply`
     };
 
     return (
