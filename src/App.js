@@ -8,7 +8,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        { quadtree.map((image, i) => <Tile key={ i } {...image} />)}
+        { quadtree.quadtree.map((image, i) => <Tile key={ i } {...image} />)}
       </div>
     );
   }
