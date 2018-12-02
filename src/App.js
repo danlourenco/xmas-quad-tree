@@ -29,7 +29,7 @@ export default class App extends Component {
       .then(result => result.json())
       .then(result => this.setState({ 
         doneLoading: true,
-        iterations: this.state.iterations < 512 ? this.state.iterations + 4 : 512,
+        iterations: this.state.iterations < 1024 ? this.state.iterations + 4 : 1024,
         quadtree: result.quadtree,
       }))
       .catch(err => console.error(err));
