@@ -11,7 +11,7 @@ export default class App extends Component {
     iterations: 0,
   }
   componentDidMount = () => {
-    this.timer = setInterval(() => this.getQuadTree(), 4000);
+    this.timer = setInterval(() => this.getQuadTree(), 2000);
   }
 
   componentWillUnmount = () => {
@@ -23,14 +23,14 @@ export default class App extends Component {
       method: 'post',
       body: JSON.stringify({
         iterations: `${this.state.iterations}`,
-        source: 'https://static1.squarespace.com/static/50f4828fe4b09bfe914638ba/t/5b5ff80870a6ad7675283e6f/1533016278805/Slalom_Indexs-04.png?format=2500w'
+        source: 'http://www.pmoadvisory.com/wp-content/uploads/2014/03/happy-holidays-text-png-10.png'
       })
     })
       .then(result => result.json())
       .then(result => this.setState({ 
         doneLoading: true,
+        iterations: this.state.iterations < 512 ? this.state.iterations + 4 : 512,
         quadtree: result.quadtree,
-        iterations: this.state.iterations + 4
       }))
       .catch(err => console.error(err));
   }
