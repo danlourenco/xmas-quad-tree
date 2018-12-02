@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-// import quadtree from './quadtree.json';
 import Tile from './Tile';
 
 export default class App extends Component {
