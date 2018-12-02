@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getRandomImage } from './source';
+import photo from './pexels-photo-109919.jpeg';
 export default class Tile extends Component {
   static propTypes = {
     color: PropTypes.shape({
@@ -19,12 +19,13 @@ export default class Tile extends Component {
   };
 
   render() {
-    const { color: { r, g, b }, height, width, x, y, } = this.props;
+    const { color: { r, g, b }, height, width, x, y, photoUrl } = this.props;
     const { scale } = this.state;
 
-    const photo = getRandomImage();
+    // const photo = getRandomImage();
     const tileStyle = {
-      background: `url(${photo})`,
+      border: `1px solid black`,
+      background: `url(${photoUrl})`,
       backgroundColor: `rgba(${ r }, ${ g }, ${ b }, ${ 1 })`,
       backgroundSize: `cover`,
       position: 'absolute',
