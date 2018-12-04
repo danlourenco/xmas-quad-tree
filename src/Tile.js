@@ -29,10 +29,10 @@ export default class Tile extends Component {
       backgroundColor: `rgba(${ r }, ${ g }, ${ b }, ${ 1 })`,
       backgroundSize: `cover`,
       position: 'absolute',
-      height: `${ height * scale }%`,
-      width: `${ width * scale }%`,
-      top: `${ y * scale }%`,
-      left: `${ x * scale }%`,
+      height: `${ height * scale }px`,
+      width: `${ width * scale }px`,
+      top: `${ y * scale }px`,
+      left: `${ x * scale }px`,
       backgroundBlendMode: `screen`
     };
 
