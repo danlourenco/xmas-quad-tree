@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import './App.css';
 import Tile from './Tile';
+import Canvas from './Canvas';
 
 export default class App extends Component {
 
   state = {
-    doneLoading: false,
+    hasLoaded: false,
     quadtree: null,
-    iterations: 0,
+    iterations: 512,
+    files: [],
+    source: {
+      height: 0,
+      width: 0,
+    }
   }
   componentDidMount = () => {
-    this.timer = setInterval(() => this.getQuadTree(), 2000);
+    this.timer = setInterval(() => this.getQuadTree(), 3000);
   }
 
   componentWillUnmount = () => {
@@ -22,25 +28,35 @@ export default class App extends Component {
       method: 'post',
       body: JSON.stringify({
         iterations: `${this.state.iterations}`,
-        source: 'http://www.pmoadvisory.com/wp-content/uploads/2014/03/happy-holidays-text-png-10.png'
+        source: 'https://i.imgur.com/c1Ya0We.jpg'
       })
     })
       .then(result => result.json())
       .then(result => this.setState({ 
-        doneLoading: true,
+        hasLoaded: true,
         iterations: this.state.iterations < 1024 ? this.state.iterations + 4 : 1024,
         quadtree: result.quadtree,
+        files: result.files,
+        source: result.source,
       }))
       .catch(err => console.error(err));
   }
   render() {
-    const { doneLoading, quadtree } = this.state;
+    const { hasLoaded, quadtree, files, source: { height = 0, width = 0} } = this.state;
     const photoUrl = `https://loremflickr.com/320/240?random=`;
-    console.log(this.state.quadtree);
+    // console.log(this.state.quadtree);
     return (
       <div className="App">
-        { doneLoading && quadtree.map((image, i) => 
-          <Tile key={ i } photoUrl={ `${photoUrl}${i}`} {...image} />)}
+        { !hasLoaded && <p>loading</p>}
+        {/* { doneLoading && quadtree.map((image, i) => 
+          <Tile key={ i } photoUrl={ `${photoUrl}${i}`} {...image} />)} */}
+          <Canvas 
+            height={ height }
+            width={ width }
+            quadtree={ quadtree }
+            files={ files }
+            hasLoaded={ hasLoaded }
+          />
       </div> 
     );
   }
