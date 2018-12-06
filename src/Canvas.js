@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 
 export default class Canvas extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   state = {
-    // isPainting: false,
-    // hasLoaded: false,
     width: null,
     height: null,
   }
@@ -17,10 +11,6 @@ export default class Canvas extends Component {
     this.canvas.height = 2301;
     this.ctx = this.canvas.getContext('2d');
   }
-
-  // componentDidUpdate(prevProps, state) {
-  //   if (this.props)
-  // }
 
   static getDerivedStateFromProps(props, state) {
     if (props.width !== state.width 

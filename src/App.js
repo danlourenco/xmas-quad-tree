@@ -16,7 +16,8 @@ export default class App extends Component {
     }
   }
   componentDidMount = () => {
-    this.timer = setInterval(() => this.getQuadTree(), 3000);
+    this.getQuadTree();
+    this.timer = setInterval(() => this.getQuadTree(), 60000);
   }
 
   componentWillUnmount = () => {
@@ -43,13 +44,9 @@ export default class App extends Component {
   }
   render() {
     const { hasLoaded, quadtree, files, source: { height = 0, width = 0} } = this.state;
-    const photoUrl = `https://loremflickr.com/320/240?random=`;
-    // console.log(this.state.quadtree);
     return (
       <div className="App">
         { !hasLoaded && <p>loading</p>}
-        {/* { doneLoading && quadtree.map((image, i) => 
-          <Tile key={ i } photoUrl={ `${photoUrl}${i}`} {...image} />)} */}
           <Canvas 
             height={ height }
             width={ width }
