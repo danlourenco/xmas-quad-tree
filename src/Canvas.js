@@ -15,8 +15,8 @@ export default class Canvas extends Component {
   }
 
   setCanvasSize = (height, width) => {
-    this.canvas.height = height;
-    this.canvas.width = width;
+    this.canvas.height = window.innerWidth / (16/9);
+    this.canvas.width = window.innerWidth;
     console.log('setCanvasSize');
   }
 
@@ -25,9 +25,12 @@ export default class Canvas extends Component {
     const image = new Image();
 
     image.onload = () => {
-      this.ctx.drawImage(image, x, y, width, height)
+
+      var ratio = this.canvas.width / this.props.width
+
+      this.ctx.drawImage(image, Math.round(x * ratio), Math.round(y * ratio), Math.round(width * ratio), Math.round(height * ratio))
       this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
-      this.ctx.fillRect(x, y, width, height)
+      this.ctx.fillRect(Math.round(x * ratio), Math.round(y * ratio), Math.round(width * ratio), Math.round(height * ratio))
     };
 
     image.src = tile.url + "?crop=faces,center&fit=crop&h=" + tile.height + "&w=" + tile.width
