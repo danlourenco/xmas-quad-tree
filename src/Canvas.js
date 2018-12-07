@@ -28,9 +28,15 @@ export default class Canvas extends Component {
 
       var ratio = this.canvas.width / this.props.width
 
-      this.ctx.drawImage(image, Math.round(x * ratio), Math.round(y * ratio), Math.round(width * ratio), Math.round(height * ratio))
+      this.ctx.drawImage(image, x * ratio, y * ratio, width * ratio, height * ratio)
       this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
-      this.ctx.fillRect(Math.round(x * ratio), Math.round(y * ratio), Math.round(width * ratio), Math.round(height * ratio))
+      this.ctx.fillRect(x * ratio, y * ratio, width * ratio, height * ratio)
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth="1";
+      this.ctx.strokeStyle="black";
+      this.ctx.rect(x * ratio, y * ratio, width * ratio, height * ratio);
+      this.ctx.stroke();
     };
 
     image.src = tile.url + "?crop=faces,center&fit=crop&h=" + tile.height + "&w=" + tile.width
