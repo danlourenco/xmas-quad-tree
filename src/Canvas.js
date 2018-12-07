@@ -34,17 +34,8 @@ export default class Canvas extends Component {
   }
 
   paint = () => {
-    this.props.quadtree.forEach( (item, index) => {
-      this.paintTile(item);
-      // const { x, y, width, height, color: { r, g, b } } = item;
-      // const image = new Image();
-      // image.onload = () => {
-      //   this.ctx.drawImage(image, x, y, width, height)
-      //   this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
-      //   this.ctx.fillRect(item.x, item.y, item.width, item.height)
-      // };
-
-      // image.src = this.getRandomImage();
+    this.props.quadtree.forEach( (tile) => {
+      this.paintTile(tile);
     });
   }
 
