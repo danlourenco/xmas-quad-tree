@@ -15,8 +15,8 @@ export default class Canvas extends Component {
   }
 
   setCanvasSize = (height, width) => {
-    this.canvas.height = height;
-    this.canvas.width = width;
+    this.canvas.height = window.innerWidth / (16/9);
+    this.canvas.width = window.innerWidth;
     console.log('setCanvasSize');
   }
 
@@ -25,12 +25,22 @@ export default class Canvas extends Component {
     const image = new Image();
 
     image.onload = () => {
-      this.ctx.drawImage(image, x, y, width, height)
+
+      var ratio = this.canvas.width / this.props.width
+
+      this.ctx.drawImage(image, x * ratio, y * ratio, width * ratio, height * ratio)
       this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
-      this.ctx.fillRect(x, y, width, height)
+      this.ctx.fillRect(x * ratio, y * ratio, width * ratio, height * ratio)
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth="1";
+      this.ctx.strokeStyle="black";
+      this.ctx.rect(x * ratio, y * ratio, width * ratio, height * ratio);
+      this.ctx.stroke();
     };
 
-    image.src = this.getRandomImage();
+    image.src = tile.url + "?crop=faces,center&fit=crop&h=" + tile.height + "&w=" + tile.width
+
   }
 
   paint = () => {
@@ -39,17 +49,12 @@ export default class Canvas extends Component {
     });
   }
 
-  getRandomImage = () => {
-    const { files } = this.props;
-    return randomArrayItem(files)['url'];
-  }
-
   render() {
     const { hasLoaded } = this.props;
     
     if (hasLoaded) {
       this.paint();
-    } 
+    }
 
     return <canvas ref={ (ref) => ( this.canvas = ref )} />
   }
