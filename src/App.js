@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import Tile from './Tile';
+import config from './config';
 import Canvas from './Canvas';
 
 export default class App extends Component {
 
   state = {
+    canvasSizeSet: false,
     hasLoaded: false,
     quadtree: null,
     iterations: 512,
@@ -17,42 +18,55 @@ export default class App extends Component {
   }
   componentDidMount = () => {
     this.getQuadTree();
-    this.timer = setInterval(() => this.getQuadTree(), 60000);
+    this.timer = setInterval(() => this.getQuadTree(), 5000);
   }
 
   componentWillUnmount = () => {
     this.timer = null;
   }
 
+  handleSizeSet = () => this.setState({ canvasSizeSet: true });
+
   getQuadTree = () => {
-    fetch('https://ewe1w9vued.execute-api.us-west-2.amazonaws.com/default/quadtree', {
+    fetch(config.quadtreeUrl, {
       method: 'post',
       body: JSON.stringify({
         iterations: `${this.state.iterations}`,
-        source: 'https://i.imgur.com/c1Ya0We.jpg'
+        source: config.sourceUrl
       })
     })
       .then(result => result.json())
       .then(result => this.setState({ 
+        files: result.files,
         hasLoaded: true,
         iterations: this.state.iterations < 1024 ? this.state.iterations + 4 : 1024,
         quadtree: result.quadtree,
-        files: result.files,
         source: result.source,
       }))
       .catch(err => console.error(err));
   }
   render() {
-    const { hasLoaded, quadtree, files, source: { height = 0, width = 0} } = this.state;
+    const { 
+      canvasSizeSet,
+      hasLoaded, 
+      quadtree, 
+      files, 
+      source: { 
+        height = 0, 
+        width = 0
+      } 
+    } = this.state;
     return (
       <div className="App">
         { !hasLoaded && <p>loading</p>}
           <Canvas 
+            canvasSizeSet={ canvasSizeSet }
+            files={ files }
+            hasLoaded={ hasLoaded }
             height={ height }
             width={ width }
             quadtree={ quadtree }
-            files={ files }
-            hasLoaded={ hasLoaded }
+            onSizeSet={ this.handleSizeSet }
           />
       </div> 
     );

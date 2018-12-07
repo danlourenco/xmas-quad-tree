@@ -1,62 +1,65 @@
 import React, { Component } from 'react';
+import { randomArrayItem } from './utils';
 
 export default class Canvas extends Component {
-  state = {
-    width: null,
-    height: null,
-  }
 
   componentDidMount() {
-    this.canvas.width = 3072;
-    this.canvas.height = 2301;
     this.ctx = this.canvas.getContext('2d');
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.width !== state.width 
-      || props.height !== state.height
-      ) {
-      return {
-          width: props.width,
-          height: props.height,
-      }
+  componentWillReceiveProps({ height, width, canvasSizeSet }) {
+    if (canvasSizeSet === false) {
+      this.setCanvasSize(height, width);
+      this.props.onSizeSet();
     }
+  }
 
-    return null;
+  setCanvasSize = (height, width) => {
+    this.canvas.height = height;
+    this.canvas.width = width;
+    console.log('setCanvasSize');
+  }
+
+  paintTile = tile => {
+    const { x, y, width, height, color: { r, g, b } } = tile;
+    const image = new Image();
+
+    image.onload = () => {
+      this.ctx.drawImage(image, x, y, width, height)
+      this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
+      this.ctx.fillRect(x, y, width, height)
+    };
+
+    image.src = this.getRandomImage();
   }
 
   paint = () => {
     this.props.quadtree.forEach( (item, index) => {
-      console.log(item);
-      const { x, y, width, height, color: { r, g, b } } = item;
-      const image = new Image();
-      image.onload = () => {
-        this.ctx.drawImage(image, x, y, width, height)
-        this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
-        this.ctx.fillRect(item.x, item.y, item.width, item.height)
-      };
+      this.paintTile(item);
+      // const { x, y, width, height, color: { r, g, b } } = item;
+      // const image = new Image();
+      // image.onload = () => {
+      //   this.ctx.drawImage(image, x, y, width, height)
+      //   this.ctx.fillStyle = `rgba(${ r },${ g },${ b }, 0.75)`;
+      //   this.ctx.fillRect(item.x, item.y, item.width, item.height)
+      // };
 
-      image.src = this.getRandomImage();
-      console.log(image.src);
+      // image.src = this.getRandomImage();
     });
   }
 
   getRandomImage = () => {
     const { files } = this.props;
-    return files[Math.floor(Math.random()*files.length)]['url'];
+    return randomArrayItem(files)['url'];
   }
+
   render() {
     const { hasLoaded } = this.props;
     
     if (hasLoaded) {
       this.paint();
     } 
-    return (
-      <div style={{ display: 'flex', width: '50%%', height: '50%'}}>
-        <canvas 
-          ref={ (ref) => ( this.canvas = ref )}
-        />
-      </div>
-    )
+
+    return <canvas ref={ (ref) => ( this.canvas = ref )} />
   }
 }
