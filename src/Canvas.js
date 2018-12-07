@@ -30,7 +30,8 @@ export default class Canvas extends Component {
       this.ctx.fillRect(x, y, width, height)
     };
 
-    image.src = this.getRandomImage();
+    image.src = tile.url + "?crop=faces,center&fit=crop&h=" + tile.height + "&w=" + tile.width
+
   }
 
   paint = () => {
@@ -39,17 +40,12 @@ export default class Canvas extends Component {
     });
   }
 
-  getRandomImage = () => {
-    const { files } = this.props;
-    return randomArrayItem(files)['url'];
-  }
-
   render() {
     const { hasLoaded } = this.props;
     
     if (hasLoaded) {
       this.paint();
-    } 
+    }
 
     return <canvas ref={ (ref) => ( this.canvas = ref )} />
   }
